@@ -1,0 +1,7 @@
+<nav>
+  <a href='/'>Home</a>
+  <a href='/auth/login'>Login</a>
+  <a href='/auth/logout'>Logout</a>
+  <a href='/auth/register'>Register</a>
+
+</nav>
