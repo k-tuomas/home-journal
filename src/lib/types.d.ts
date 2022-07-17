@@ -19,7 +19,7 @@ export type User = {
   createdAt: Date
   updatedAt: Date 
   email: string
-  name?: string  
+  username?: string  
   houseId?: number
   profileId?: number
 }

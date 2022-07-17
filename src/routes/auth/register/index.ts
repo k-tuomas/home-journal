@@ -6,13 +6,13 @@ import { db } from "$lib/database"
 export const POST: RequestHandler = async ({ request }) => {
   const form = await request.formData()
   const email = form.get('email')
-  const name = form.get('name')
+  const username = form.get('username')
   const password = form.get('password')
 
   if (
     typeof email !== 'string' ||
     typeof password !== 'string' ||
-    (name && typeof name !== 'string')
+    typeof username !== 'string'
   ) {
     return {
       status: 400,
@@ -31,7 +31,7 @@ export const POST: RequestHandler = async ({ request }) => {
     await db.user.create({
       data: {
         email: email,
-        name: name,
+        username: username,
         passwordHash: await bcrypt.hash(password, 10)
       }
     })
