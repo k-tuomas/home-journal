@@ -1,6 +1,15 @@
 <script lang='ts'>
+  import { slide } from 'svelte/transition'
   import { session } from '$app/stores'
   import { ListIcon } from 'svelte-feather-icons'
+  import { clickOutside } from '$lib/helpers/clickOutside'
+
+  let showDropdown = false
+
+  const handleDropdown = () => {
+    showDropdown = !showDropdown
+  }
+
 </script>
 
 <svelte:head>
@@ -13,32 +22,38 @@
     <div class="navbar-links">
       <a href='/'>Home</a>
       <a href="/house">Houses</a>
-      {#if !$session.user}
-        <a href='/auth/register'>Register</a>
-        <a href='/auth/login'>Login</a>
-      {/if}
- 
     </div>
     <div class='navbar-dropdown'>
-      <button>
+      <button on:click={handleDropdown}>
         <ListIcon />
       </button>
-      <div class='dropdown-content'>
-        {#if $session.user}
-        <a href='/auth/logout'>Logout</a>
-        <a href='/'>My profile</a>
-        {/if}
-        {#if !$session.user}
-        <a href='/auth/login'>Login</a>
+      {#if showDropdown}
+        <div 
+          class='dropdown-content' 
+          use:clickOutside
+          on:click_outside={handleDropdown}
+          transition:slide
+        >
+          {#if $session.user}
+            <a href='/'>My profile</a>
+            <a href='/auth/logout'>Logout</a>
+          {/if}
+          {#if !$session.user}
+            <a href='/auth/login'>Login</a>
+            <a href='/auth/register'>Register</a>
+          {/if}
+        </div>
       {/if}
-      </div>
+
     </div>
-  
   </nav>
 </div>
 
-
 <style lang='scss'>
+  :global(body) {
+    margin: 0;
+  }
+
   .navbar {
     display: flex;
     height: 50px;
@@ -70,9 +85,12 @@
           border-radius: 5px;
         }
         .dropdown-content {
-          display: none;
           position: absolute;
-          background-color: #f9f9f9;
+          top: 58px;
+          right: 5px;
+          background-color: white;
+          border: 1px solid black;
+          border-radius: 5px;
           min-width: 160px;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 1;

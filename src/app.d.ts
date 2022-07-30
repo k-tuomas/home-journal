@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /// <reference types="@sveltejs/kit" />
 
 // See https://kit.svelte.dev/docs/types#app
@@ -12,4 +13,10 @@ declare namespace App {
 		user?: { username: string}
 	}
 	// interface Stuff {}
+}
+
+declare namespace svelte.JSX {
+  interface DOMAttributes<T> {
+    onclick_outside?: CompositionEventHandler<T>;
+  }
 }
