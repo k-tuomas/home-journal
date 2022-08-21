@@ -17,8 +17,8 @@
   import { session } from '$app/stores'
   import { send } from '$lib/api'
 
-  export let error: string
-  export let success: string
+  export let error: string = ''
+  export let success: string = ''
 
   const onSubmit = async (event: SubmitEvent) => {
     const formEl = event.target as HTMLFormElement

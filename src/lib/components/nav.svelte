@@ -10,6 +10,7 @@
     showDropdown = !showDropdown
   }
 
+  let dropdownButton = undefined
 </script>
 
 <svelte:head>
@@ -24,13 +25,13 @@
       <a href="/house">Houses</a>
     </div>
     <div class='navbar-dropdown'>
-      <button on:click={handleDropdown}>
+      <button on:click={handleDropdown} bind:this={dropdownButton}>
         <ListIcon />
       </button>
       {#if showDropdown}
         <div 
           class='dropdown-content' 
-          use:clickOutside
+          use:clickOutside={[dropdownButton]}
           on:click_outside={handleDropdown}
           transition:slide
         >

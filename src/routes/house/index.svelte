@@ -2,7 +2,6 @@
   import type { Load } from '@sveltejs/kit'
 
   export const load: Load = ({ session }) => {
-    
     //if no session found redirect user to login page
     if (!session.user) {
       return {
@@ -11,6 +10,7 @@
       }
     }
 
+    console.log(session.user)
     return {
       status: 200,
       props: {
