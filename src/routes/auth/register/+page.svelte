@@ -1,20 +1,6 @@
-<script context='module' lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  export const load: Load = ({ session, props }) => {
-    if (session.user) {
-      return {
-        status: 302,
-        redirect: '/'
-      }
-    }
-
-    return { props }
-  }
-</script>
-
-
 <script lang='ts'>
+  throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
+
   import { send } from '$lib/api'
 
   export let error: string = ''

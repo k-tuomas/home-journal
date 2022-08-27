@@ -1,10 +1,12 @@
-import type { RequestHandler } from "@sveltejs/kit"
+import type { PageServerLoad } from './$types'
+import { error } from "@sveltejs/kit"
+
 import * as bcrypt from 'bcrypt'
 import * as cookie from 'cookie'
 
 import { db } from "$lib/database"
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: PageServerLoad = async ({ request }) => {
   const form = await request.formData()
   const email = form.get('email')
   const password = form.get('password')
@@ -13,17 +15,11 @@ export const POST: RequestHandler = async ({ request }) => {
     typeof email !== 'string' ||
     typeof password !== 'string' 
   ) {
-    return {
-      status: 400,
-      body: { error: 'invalid email or password'}
-    }
+      throw error(400, 'invalid email or password')
   }
 
   if (!email || !password) {
-    return {
-      status: 400,
-      body: { error: 'email and password required'}
-    }
+    throw error(403, 'Email and password required')
   }
 
   const user = await db.user.findUnique({
@@ -32,18 +28,13 @@ export const POST: RequestHandler = async ({ request }) => {
   const passwordCheck = user &&  await bcrypt.compare(password, user.passwordHash)
 
   if (!user || !passwordCheck) {
-    return {
-      status: 400,
-      body: { error: 'invalid email or password' }
-    }
+    throw error(403, 'Invalid username or password')
   }
 
   return {
     status: 200,
-    body: { 
-      user: { email },
-      success: 'Success'
-    },
+    user: { email },
+    success: 'Success',
     headers: {
       'Set-Cookie': cookie.serialize('session', user.id.toString(), {
         path: '/',
@@ -55,5 +46,4 @@ export const POST: RequestHandler = async ({ request }) => {
     }
   }
 
-  return {}
 }

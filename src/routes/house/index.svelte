@@ -1,23 +1,25 @@
 <script context='module' lang='ts'>
-  import type { Load } from '@sveltejs/kit'
+  
+  // import type { PageLoad } from './$types'
 
-  export const load: Load = ({ session }) => {
-    //if no session found redirect user to login page
-    if (!session.user) {
-      return {
-        status: 302,
-        redirect: '/auth/login'
-      }
-    }
+  // export const load: PageLoad = async ({ parent }) => {
+  //   //if no session found redirect user to login page
+  //   const { user } = await parent()
+  //   if (!user) {
+  //     return {
+  //       status: 302,
+  //       redirect: '/auth/login'
+  //     }
+  //   }
 
-    console.log(session.user)
-    return {
-      status: 200,
-      props: {
-        user: session.user.username
-      }
-    }
-  }
+  
+  //   return {
+  //     status: 200,
+  //     props: {
+  //       user: user.username
+  //     }
+  //   }
+  // }
 
 </script>
 

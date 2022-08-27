@@ -1,16 +1,16 @@
 <script lang='ts'>
   import { slide } from 'svelte/transition'
-  import { session } from '$app/stores'
+  import { page } from '$app/stores'
   import { ListIcon } from 'svelte-feather-icons'
   import { clickOutside } from '$lib/helpers/clickOutside'
 
   let showDropdown = false
+  let dropdownButton = undefined
 
   const handleDropdown = () => {
     showDropdown = !showDropdown
   }
 
-  let dropdownButton = undefined
 </script>
 
 <svelte:head>
@@ -35,11 +35,11 @@
           on:click_outside={handleDropdown}
           transition:slide
         >
-          {#if $session.user}
+          {#if $page.data.user}
             <a href='/'>My profile</a>
             <a href='/auth/logout'>Logout</a>
           {/if}
-          {#if !$session.user}
+          {#if !$page.data.user}
             <a href='/auth/login'>Login</a>
             <a href='/auth/register'>Register</a>
           {/if}
@@ -59,7 +59,7 @@
     display: flex;
     height: 50px;
     background-color: darkolivegreen;
-
+    
     > nav {
       display: flex;
       flex: 1 0 auto;

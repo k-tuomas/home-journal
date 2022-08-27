@@ -1,20 +1,6 @@
-<script context='module' lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  export const load: Load = ({ session, props }) => {
-    if (session.user) {
-      return {
-        status: 302,
-        redirect: '/'
-      }
-    }
-
-    return { props }
-  }
-</script>
-
 <script lang='ts'>
-  import { session } from '$app/stores'
+  
+  import { page } from '$app/stores'
   import { send } from '$lib/api'
 
   export let error: string = ''
@@ -29,7 +15,7 @@
       error = res.error
     }
 
-    $session.user = res.user
+    $page.data.user = res.user
     
     formEl.reset()
   }

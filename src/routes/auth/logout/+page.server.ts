@@ -1,7 +1,7 @@
-import type { RequestHandler } from "@sveltejs/kit"
+import type { PageServerLoad } from "./$types"
 import * as cookie from 'cookie'
 
-export const GET: RequestHandler = async () => {
+export const GET: PageServerLoad = async () => {
   return {
     status: 303,
     headers: {
@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
         path: '/',
         expires: new Date(0)
       }),
-      location: '/'
+    location: '/'
     }
   }
 }

@@ -1,9 +1,9 @@
-import type { RequestHandler } from "@sveltejs/kit"
+import type { PageServerLoad } from './$types'
 import * as bcrypt from 'bcrypt'
 
 import { db } from "$lib/database"
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: PageServerLoad = async ({ request }) => {
   const form = await request.formData()
   const email = form.get('email')
   const username = form.get('username')
@@ -16,14 +16,14 @@ export const POST: RequestHandler = async ({ request }) => {
   ) {
     return {
       status: 400,
-      body: { error: 'invalid email or password'}
+      error: 'invalid email or password'
     }
   }
 
   if (!email || !password) {
     return {
       status: 400,
-      body: { error: 'email and password required'}
+      error: 'email and password required'
     }
   }
 
@@ -38,17 +38,14 @@ export const POST: RequestHandler = async ({ request }) => {
 
     return {
       status: 200,
-      body: { success: 'Success'}
+      success: 'Success'
     }
   } catch (err) {
     console.log(err)
     return {
       status: 400,
-      body: {
-        error: 'error creating user'
-      }
+      error: 'error creating user'
     }
   }
 
-  return {}
 }
