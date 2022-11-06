@@ -1,80 +1,30 @@
 <script lang='ts'>
-  throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
+  import type { ActionData } from './$types'
 
-  import { send } from '$lib/api'
-
-  export let error: string = ''
-  export let success: string = ''
-
-  const onSubmit = async (event: SubmitEvent) => {
-    error = ''
-    const formEl = event.target as HTMLFormElement
-    const res = await send(formEl)
-
-    if (res.error) {
-      error = res.error
-    }
-
-    if (res.success) {
-      success = res.success
-    }
-
-    formEl.reset()
-  }
-
+  export let form: ActionData
 </script>
 
-<form 
-  on:submit|preventDefault={onSubmit} 
-  method='post'
-  autocomplete="off"
->
+<h1> Register </h1>
+
+<form action='?/register' method="POST">
   <div>
     <label for='email'>Email</label>
-    <input 
-      id='email'
-      name='email'
-      type="text"
-      required
-    >
-  </div>
-  <div>
-    <label for="username">Username</label>
-    <input 
-      id="username"
-      type="text" 
-      name="username" 
-      required
-    >
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input 
-      type="text" 
-      name="password" 
-      id="password"
-      required
-    >
+    <input id='email' name='email' type='text' required />
   </div>
 
-  {#if error}
-    <p class='error'>{error}</p>
+  <div>
+    <label for='username'>Username</label>
+    <input id='username' name='username' type='text' required />
+  </div>
+
+  <div>  
+    <label for='password'>Password</label>
+    <input id='password' name='password' type='password' required />
+  </div>
+
+  {#if form?.user}
+    <p class='error'>Username is taken.</p>
   {/if}
 
-  {#if success}
-    <div>
-      <p>Register successful</p>
-      <p>
-        <a href='/auth/login'>Log in</a>
-      </p>
-    </div>
-  {/if}
-
-  <button type='submit'>Register</button>
+  <button type="submit"> Register </button>
 </form>
-
-<style lang='scss'>
-  .error {
-    color: red
-  }
-</style>

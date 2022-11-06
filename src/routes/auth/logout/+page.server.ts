@@ -1,15 +1,14 @@
-import type { PageServerLoad } from "./$types"
+import { redirect } from '@sveltejs/kit';
 import * as cookie from 'cookie'
+import type { PageServerLoad } from './$types';
 
-export const GET: PageServerLoad = async () => {
-  return {
-    status: 303,
-    headers: {
-      'Set-Cookie': cookie.serialize('session', '', {
-        path: '/',
-        expires: new Date(0)
-      }),
-    location: '/'
-    }
-  }
+export const load: PageServerLoad = ({ setHeaders }) => {
+  setHeaders({
+    'set-cookie': cookie.serialize('session', '', {
+      path: '/',
+      expires: new Date(0)
+    })
+  })
+
+  throw redirect(303, '/')
 }

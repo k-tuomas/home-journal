@@ -1,5 +1,4 @@
 <script lang='ts'>
-  
   import { page } from '$app/stores'
   import { send } from '$lib/api'
 
@@ -10,7 +9,7 @@
     const formEl = event.target as HTMLFormElement
 
     const res = await send(formEl)
-
+    console.log(res)
     if (res.error) {
       error = res.error
     }

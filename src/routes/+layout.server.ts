@@ -7,14 +7,18 @@ export const load: LayoutServerLoad = async ({ request }) => {
 
   const cookieHeader = request.headers.get('cookie')
   const cookies = cookie.parse(cookieHeader ?? '')
+  let session
 
-  const session = await db.user.findUnique({
-    where: { id: parseInt(cookies.session, 10) },
-    select: { 
-      id: true, 
-      username: true 
-    }
-  })
+  if (parseInt(cookies.session, 10)) {
+    session = await db.user.findUnique({
+      where: { id: parseInt(cookies.session, 10) },
+      select: { 
+        id: true, 
+        username: true 
+      }
+    })
+  }
+ 
 
   
   return {

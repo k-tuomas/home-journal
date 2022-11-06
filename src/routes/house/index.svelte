@@ -1,25 +1,25 @@
 <script context='module' lang='ts'>
   
-  // import type { PageLoad } from './$types'
+  import type { PageLoad } from './$types'
 
-  // export const load: PageLoad = async ({ parent }) => {
-  //   //if no session found redirect user to login page
-  //   const { user } = await parent()
-  //   if (!user) {
-  //     return {
-  //       status: 302,
-  //       redirect: '/auth/login'
-  //     }
-  //   }
+  export const load: PageLoad = async ({ parent }) => {
+    //if no session found redirect user to login page
+    const { user } = await parent()
+    if (!user) {
+      return {
+        status: 302,
+        redirect: '/auth/login'
+      }
+    }
 
   
-  //   return {
-  //     status: 200,
-  //     props: {
-  //       user: user.username
-  //     }
-  //   }
-  // }
+    return {
+      status: 200,
+      props: {
+        user: user
+      }
+    }
+  }
 
 </script>
 

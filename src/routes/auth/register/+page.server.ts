@@ -1,51 +1,55 @@
-import type { PageServerLoad } from './$types'
-import * as bcrypt from 'bcrypt'
+import { invalid, redirect } from '@sveltejs/kit'
+import type { Action, Actions, PageServerLoad } from './$types'
+import bcrypt from 'bcrypt'
 
-import { db } from "$lib/database"
+import { db } from '$lib/database'
 
-export const POST: PageServerLoad = async ({ request }) => {
-  const form = await request.formData()
-  const email = form.get('email')
-  const username = form.get('username')
-  const password = form.get('password')
+enum Roles {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
 
+export const load:PageServerLoad = async () => {
+  //TODO
+}
+
+const register: Action =async ({request}) => {
+  const data = await request.formData()
+  const email = data.get('email')
+  const username = data.get('username')
+  const password = data.get('password')
+  
+  //TODO: add validation for email field
   if (
     typeof email !== 'string' ||
+    typeof username !== 'string' ||
     typeof password !== 'string' ||
-    typeof username !== 'string'
+    !email ||
+    !username ||
+    !password
   ) {
-    return {
-      status: 400,
-      error: 'invalid email or password'
-    }
+    return invalid(400, { invalid: true })
   }
 
-  if (!email || !password) {
-    return {
-      status: 400,
-      error: 'email and password required'
-    }
+  const user = await db.user.findUnique({
+    where: { username }
+  })
+
+  if (user) {
+    return invalid(400, { user: true })
   }
 
-  try {
-    await db.user.create({
-      data: {
-        email: email,
-        username: username,
-        passwordHash: await bcrypt.hash(password, 10)
-      }
-    })
-
-    return {
-      status: 200,
-      success: 'Success'
+  await db.user.create({
+    data: {
+      email,
+      username,
+      passwordHash: await bcrypt.hash(password, 10),
+      userAuthToken: crypto.randomUUID(),
+      role: { connect: { name: Roles.USER } }
     }
-  } catch (err) {
-    console.log(err)
-    return {
-      status: 400,
-      error: 'error creating user'
-    }
-  }
+  })
 
+  throw redirect(303, '/auth/login')
 }
+
+export const actions: Actions = { register }

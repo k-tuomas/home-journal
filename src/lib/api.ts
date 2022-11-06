@@ -5,11 +5,19 @@ type Send = Promise<{
 }>
 
 export const send = async (form: HTMLFormElement): Send => {
-  const response = await fetch(form.action, {
-    method: form.method,
-    body: new FormData(form),
-    headers: {accept: 'application/json' }
-  })
+  const formdata = new FormData(form)
+  console.log(form)
+  
+  for (const pair of formdata.entries()) {
+    console.log(pair)
+  }
 
-  return await response.json()
+  // Get variables from formData to body
+  // const response = await fetch(form.action, {
+  //   method: form.method,
+  //   body: 
+  //   headers: {accept: 'application/json' }
+  // })
+
+  // return await response.json()
 }
